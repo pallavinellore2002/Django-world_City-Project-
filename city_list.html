@@ -1,0 +1,69 @@
+<!-- myapp/templates/city_list.html -->
+<!-- myapp/templates/city_list.html -->
+<!-- myapp/templates/city_list.html -->
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>City List</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>City List</h1>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'contact' %}">Contact</a>
+    </nav>
+
+    <!-- Search form -->
+    <form method="get" action="">
+        <input type="text" name="search_query" value="{{ search_query }}" placeholder="Search...">
+        <button type="submit" name="search_type" value="name">Search by Name</button>
+        <button type="submit" name="search_type" value="countrycode">Search by Country Code</button>
+        <button type="submit" name="search_type" value="district">Search by District</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Country Code</th>
+                <th>District</th>
+                <th>Population</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for city in page_obj %}
+                <tr>
+                    <td>{{ city.id }}</td>
+                    <td>{{ city.name }}</td>
+                    <td>{{ city.countrycode }}</td>
+                    <td>{{ city.district }}</td>
+                    <td>{{ city.population }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination controls -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}&search_query={{ search_query }}&search_type={{ search_type }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&search_query={{ search_query }}&search_type={{ search_type }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&search_query={{ search_query }}&search_type={{ search_type }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</body>
+</html>
